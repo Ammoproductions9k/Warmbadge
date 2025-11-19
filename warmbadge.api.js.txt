@@ -1,0 +1,18 @@
+// warmbadge.api.js
+
+const API_URL = 'http://localhost:4000/api/inbox-health';
+
+export async function fetchInboxHealth() {
+  try {
+    const response = await fetch(API_URL, {
+      headers: {
+        'Authorization': 'demo-token' // Replace with real token if needed
+      }
+    });
+    if (!response.ok) throw new Error('API error');
+    return await response.json();
+  } catch (err) {
+    console.error('Failed to fetch inbox health:', err);
+    return null;
+  }
+}

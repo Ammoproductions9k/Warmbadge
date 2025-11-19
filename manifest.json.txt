@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "WarmBadge",
+  "description": "Dynamic inbox health badge for Gmail",
+  "version": "1.0",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["https://mail.google.com/*"],
+  "background": {
+    "service_worker": "warmbadge.api.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["warmbadge.gmail.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "WarmBadge",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}

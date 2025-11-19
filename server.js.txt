@@ -1,0 +1,35 @@
+// server.js
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { getInboxHealth } from './inboxHealthService.js';
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 4000;
+
+app.use(cors());
+app.use(express.json());
+
+app.get('/api/inbox-health', async (req, res) => {
+  try {
+    const token = req.headers['authorization'];
+    const userId = token ? decodeToken(token) : 'demo-user'; // Replace with real auth
+
+    const health = await getInboxHealth(userId);
+    res.json(health);
+  } catch (err) {
+    console.error('API error:', err);
+    res.status(500).json({ error: 'Failed to compute inbox health' });
+  }
+});
+
+function decodeToken(token) {
+  // Placeholder — replace with JWT or session logic
+  return 'user-from-token';
+}
+
+app.listen(PORT, () => {
+  console.log(`WarmBadge backend listening on port ${PORT}`);
+});

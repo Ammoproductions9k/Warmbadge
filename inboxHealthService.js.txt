@@ -1,0 +1,58 @@
+// inboxHealthService.js
+
+export async function getInboxHealth(userId) {
+  const signals = await fetchInboxSignals(userId);
+  const score = computeScoreFromSignals(signals);
+  const status = classifyScore(score);
+  const message = generateMessage(status);
+
+  return {
+    score,
+    status,
+    message,
+    signals,
+  };
+}
+
+async function fetchInboxSignals(userId) {
+  // Placeholder logic — replace with real data sources
+  return {
+    unreadCount: 42,
+    bounceRate: 0.03,
+    dmarcStatus: 'pass',
+    spamFlagged: 1,
+  };
+}
+
+function computeScoreFromSignals(signals) {
+  let score = 100;
+
+  if (signals.unreadCount > 50) score -= 10;
+  if (signals.bounceRate > 0.05) score -= 20;
+  if (signals.dmarcStatus !== 'pass') score -= 15;
+  if (signals.spamFlagged > 0) score -= 10;
+
+  return Math.max(score, 0);
+}
+
+function classifyScore(score) {
+  if (score >= 90) return 'excellent';
+  if (score >= 75) return 'healthy';
+  if (score >= 50) return 'warning';
+  return 'critical';
+}
+
+function generateMessage(status) {
+  switch (status) {
+    case 'excellent':
+      return 'Inbox is in great shape.';
+    case 'healthy':
+      return 'Inbox is doing well.';
+    case 'warning':
+      return 'Inbox needs attention.';
+    case 'critical':
+      return 'Inbox health is poor.';
+    default:
+      return 'Unknown status.';
+  }
+}

@@ -1,0 +1,57 @@
+// warmbadge.ui.js
+
+export function renderBadge(health) {
+  const badge = document.createElement('div');
+  badge.className = 'warmbadge';
+  badge.innerHTML = `
+    <div class="warmbadge-score">${health.score}</div>
+    <div class="warmbadge-status">${health.status}</div>
+    <div class="warmbadge-tooltip">${health.message}</div>
+  `;
+
+  applyStyles(badge);
+  return badge;
+}
+
+function applyStyles(badge) {
+  badge.style.position = 'absolute';
+  badge.style.top = '8px';
+  badge.style.right = '8px';
+  badge.style.padding = '6px 10px';
+  badge.style.borderRadius = '6px';
+  badge.style.backgroundColor = getColor(badge.querySelector('.warmbadge-status').textContent);
+  badge.style.color = '#fff';
+  badge.style.fontSize = '12px';
+  badge.style.zIndex = '9999';
+  badge.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+  badge.style.cursor = 'default';
+
+  const tooltip = badge.querySelector('.warmbadge-tooltip');
+  tooltip.style.display = 'none';
+  tooltip.style.position = 'absolute';
+  tooltip.style.top = '100%';
+  tooltip.style.left = '0';
+  tooltip.style.backgroundColor = '#333';
+  tooltip.style.color = '#fff';
+  tooltip.style.padding = '4px 8px';
+  tooltip.style.borderRadius = '4px';
+  tooltip.style.whiteSpace = 'nowrap';
+  tooltip.style.marginTop = '4px';
+
+  badge.addEventListener('mouseenter', () => {
+    tooltip.style.display = 'block';
+  });
+  badge.addEventListener('mouseleave', () => {
+    tooltip.style.display = 'none';
+  });
+}
+
+function getColor(status) {
+  switch (status) {
+    case 'excellent': return '#2ecc71';
+    case 'healthy': return '#3498db';
+    case 'warning': return '#f39c12';
+    case 'critical': return '#e74c3c';
+    default: return '#7f8c8d';
+  }
+}

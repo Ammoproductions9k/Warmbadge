@@ -1,0 +1,26 @@
+// warmbadge.gmail.js
+
+import { fetchInboxHealth } from './warmbadge.api.js';
+import { renderBadge } from './warmbadge.ui.js';
+
+function injectBadge() {
+  const composeWindows = document.querySelectorAll('[role="dialog"]');
+  composeWindows.forEach(async (window) => {
+    if (window.querySelector('.warmbadge')) return;
+
+    const health = await fetchInboxHealth();
+    if (!health) return;
+
+    const badge = renderBadge(health);
+    window.appendChild(badge);
+  });
+}
+
+const observer = new MutationObserver(() => {
+  injectBadge();
+});
+
+observer.observe(document.body, {
+  childList: true,
+  subtree: true,
+});
